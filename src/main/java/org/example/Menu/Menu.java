@@ -1,5 +1,8 @@
 package org.example.Menu;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.text.MessageFormat;
 
@@ -41,49 +44,78 @@ public class Menu {
     }
 
     private int userChoice() {
-        System.out.print("Enter your choice: ");
-        return sc.nextInt();
+        while (true) {
+            try {
+                System.out.print("Enter your choice: ");
+                return sc.nextInt();
+
+            } catch (Exception e) {
+                System.out.println("Enter a valid number for the menu");
+                sc.next();
+            }
+        }
     }
 
     private double amountToAdd() {
-        System.out.print("Enter the amount you want to exchange: ");
-        return sc.nextDouble();
+        while (true) {
+            try {
+                System.out.print("Enter the amount you want to convert: ");
+                double userInput = sc.nextDouble();
+
+                if (userInput <= 0) {
+
+                    System.out.println("Enter a valid number");
+
+                } else {
+
+                    return userInput;
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println("Enter a valid number");
+                sc.next();
+
+            }
+        }
     }
 
-    private void printResult(double userValue, double result, String currentCurrency, String toCurrency) {
+    private void printResult(double userValue, double result, String fromCurrency, String toCurrency) {
         System.out.println(" ");
-        System.out.println(MessageFormat.format("{0} {1} is {2} {3}", userValue, currentCurrency, result, toCurrency));
+        LocalDateTime dateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM uuuu  HH:mm:ss ");
+        String formatedDateTime = dateTime.format(formatter);
+        System.out.println(MessageFormat.format("{0} {1} is {2} {3} at date of {4}", userValue, fromCurrency, result, toCurrency, formatedDateTime));
     }
 
 
     private void exchangeCalculations() {
         double result = 0, userValue = 0;
-        String currentCurrency = " ", toCurrency = " ";
+        String fromCurrency = " ", toCurrency = " ";
 
         int menuChoice = userChoice();
 
         switch (menuChoice) {
             case 1:
-                currentCurrency = "SEK";
+                fromCurrency = "SEK";
                 toCurrency = "USD";
                 userValue = amountToAdd();
                 result = calculateExchangeSekToUsd(userValue);
                 break;
 
             case 2:
-                currentCurrency = "USD";
+                fromCurrency = "USD";
                 toCurrency = "SEK";
                 userValue = amountToAdd();
                 result = calculateExchangeUsdToSek(userValue);
                 break;
             case 3:
-                currentCurrency = "SEK";
+                fromCurrency = "SEK";
                 toCurrency = "Euro";
                 userValue = amountToAdd();
                 result = calculateExchangeSekToEuro(userValue);
                 break;
             case 4:
-                currentCurrency = "Euro";
+                fromCurrency = "Euro";
                 toCurrency = "SEK";
                 userValue = amountToAdd();
                 result = calculateExchangeEuroToSek(userValue);
@@ -94,10 +126,11 @@ public class Menu {
             default:
                 System.out.println("Wrong menu choice");
         }
+
         if (menuChoice == 0) {
             System.out.println("Bye have a great time ");
         } else {
-            printResult(userValue, result, currentCurrency, toCurrency);
+            printResult(userValue, result, fromCurrency, toCurrency);
         }
     }
 }

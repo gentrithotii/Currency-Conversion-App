@@ -3,7 +3,7 @@ package org.example.Currency;
 public class CurrencyHelper {
 
     public enum Currency {
-        SEK, USD, Euro
+        SEK, USD, Euro;
     }
 
     public static final double EXCHANGE_SEK_TO_USD = 0.098;
