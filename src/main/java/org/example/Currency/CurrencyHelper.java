@@ -2,7 +2,7 @@ package org.example.Currency;
 
 public class CurrencyHelper {
 
-    public static enum Currency {
+    public enum Currency {
         SEK, USD, Euro
     }
 
@@ -13,5 +13,17 @@ public class CurrencyHelper {
 
     public static double calculateExchangeSekToUsd(double amount) {
         return amount * EXCHANGE_SEK_TO_USD;
+    }
+
+    public static double calculateExchangeUsdToSek(double amount) {
+        return amount * EXCHANGE_USD_TO_SEK;
+    }
+
+    public static double calculateExchangeSekToEuro(double amount) {
+        return amount * EXCHANGE_SEK_TO_EURO;
+    }
+
+    public static double calculateExchangeEuroToSek(double amount) {
+        return amount * EXCHANGE_EURO_TO_SEK;
     }
 }
