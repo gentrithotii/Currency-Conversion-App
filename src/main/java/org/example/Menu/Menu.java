@@ -30,24 +30,24 @@ public class Menu {
             switch (menuChoice) {
                 case 1:
                     System.out.println("Convert sek to usd");
-                    break;
+                    continue;
                 case 2:
                     System.out.println("Usd to Sek");
-                    break;
+                    continue;
                 case 3:
                     System.out.println("SEK to Euro");
-                    break;
+                    continue;
                 case 4:
                     System.out.println("Euro to SEK");
-                    break;
+                    continue;
                 case 0:
                     System.out.println("Exit");
                     break;
                 default:
                     System.out.println("Wrong menu choice");
+                    continue;
             }
-
-
+            break;
         }
     }
 }
