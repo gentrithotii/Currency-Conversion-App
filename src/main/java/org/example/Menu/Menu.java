@@ -1,5 +1,7 @@
 package org.example.Menu;
 
+import org.example.Currency.ExchangeRateCurrency;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
@@ -11,13 +13,14 @@ import static org.example.Currency.CurrencyHelper.*;
 public class Menu {
     private final Scanner sc;
     private boolean loopExit = false;
+    ExchangeRateCurrency exchangeRateCurrency;
 
     public Menu() {
         sc = new Scanner(System.in);
+        exchangeRateCurrency = new ExchangeRateCurrency();
     }
 
     private void printExchangeRate() {
-        System.out.println(" ");
         System.out.println("Currency Converter App");
         System.out.println("The exchange rate for SEK to USD is : " + EXCHANGE_SEK_TO_USD);
         System.out.println("The exchange rate for USD to SEK is: " + EXCHANGE_USD_TO_SEK);
@@ -64,61 +67,75 @@ public class Menu {
 
                 if (userInput <= 0) {
 
-                    System.out.println("Enter a valid number");
+                    System.out.println("Enter a valid positive Numbers ");
 
                 } else {
-
                     return userInput;
                 }
 
             } catch (InputMismatchException e) {
-                System.out.println("Enter a valid number");
+                System.out.println("Enter a valid number if EX: 2.5 or whole numbers EX: 1 and use Dot not Comma ");
                 sc.next();
 
             }
         }
     }
 
-    private void printResult(double userValue, double result, String fromCurrency, String toCurrency) {
+    private void printResult(ExchangeRateCurrency exchangeRateCurrency) {
         System.out.println(" ");
         LocalDateTime dateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM uuuu  HH:mm:ss ");
         String formatedDateTime = dateTime.format(formatter);
-        System.out.println(MessageFormat.format("{0} {1} is {2} {3} at date of {4}", userValue, fromCurrency, result, toCurrency, formatedDateTime));
+        System.out.println(MessageFormat.format("{0} {1} is {2} {3} at date of {4}", exchangeRateCurrency.getAmount(), exchangeRateCurrency.getFromCurrency(), exchangeRateCurrency.getConvertedAmount(), exchangeRateCurrency.getToCurrency(), formatedDateTime));
     }
 
+    private void currencySetter(int numChoice) {
+        if (numChoice == 1) {
+            exchangeRateCurrency.setFromCurrency("SEK");
+            exchangeRateCurrency.setToCurrency("USD");
+        } else if (numChoice == 2) {
+            exchangeRateCurrency.setFromCurrency("USD");
+            exchangeRateCurrency.setToCurrency("SEK");
+
+        } else if (numChoice == 3) {
+            exchangeRateCurrency.setFromCurrency("SEK");
+            exchangeRateCurrency.setToCurrency("Euro");
+        } else {
+            exchangeRateCurrency.setFromCurrency("Euro");
+            exchangeRateCurrency.setToCurrency("SEK");
+        }
+    }
 
     private void exchangeCalculations() {
-        double result = 0, userValue = 0;
-        String fromCurrency = " ", toCurrency = " ";
+        double userAmount = 0;
 
         int menuChoice = userChoice();
 
         switch (menuChoice) {
             case 1:
-                fromCurrency = "SEK";
-                toCurrency = "USD";
-                userValue = amountToAdd();
-                result = calculateExchangeSekToUsd(userValue);
+                currencySetter(menuChoice);
+                userAmount = amountToAdd();
+                exchangeRateCurrency.setAmount(userAmount);
+                exchangeRateCurrency.setConvertedAmount(calculateExchangeSekToUsd(userAmount));
                 break;
 
             case 2:
-                fromCurrency = "USD";
-                toCurrency = "SEK";
-                userValue = amountToAdd();
-                result = calculateExchangeUsdToSek(userValue);
+                currencySetter(menuChoice);
+                userAmount = amountToAdd();
+                exchangeRateCurrency.setAmount(userAmount);
+                exchangeRateCurrency.setConvertedAmount(calculateExchangeUsdToSek(userAmount));
                 break;
             case 3:
-                fromCurrency = "SEK";
-                toCurrency = "Euro";
-                userValue = amountToAdd();
-                result = calculateExchangeSekToEuro(userValue);
+                currencySetter(menuChoice);
+                userAmount = amountToAdd();
+                exchangeRateCurrency.setAmount(userAmount);
+                exchangeRateCurrency.setConvertedAmount(calculateExchangeSekToEuro(userAmount));
                 break;
             case 4:
-                fromCurrency = "Euro";
-                toCurrency = "SEK";
-                userValue = amountToAdd();
-                result = calculateExchangeEuroToSek(userValue);
+                currencySetter(menuChoice);
+                userAmount = amountToAdd();
+                exchangeRateCurrency.setAmount(userAmount);
+                exchangeRateCurrency.setConvertedAmount(calculateExchangeEuroToSek(userAmount));
                 break;
             case 0:
                 loopExit = true;
@@ -130,7 +147,7 @@ public class Menu {
         if (menuChoice == 0) {
             System.out.println("Bye have a great time ");
         } else {
-            printResult(userValue, result, fromCurrency, toCurrency);
+            printResult(exchangeRateCurrency);
         }
     }
 }
