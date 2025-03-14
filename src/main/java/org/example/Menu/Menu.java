@@ -54,8 +54,14 @@ public class Menu {
         while (true) {
             try {
                 System.out.print("Enter your choice: ");
-                return sc.nextInt();
+                String input = sc.nextLine().trim();
 
+                if (!input.matches("-?\\d+")) {
+                    System.out.println("Enter a valid number for the menu");
+                    continue;
+                }
+
+                return Integer.parseInt(input);
             } catch (Exception e) {
 
                 System.out.println("Enter a valid number for the menu");
