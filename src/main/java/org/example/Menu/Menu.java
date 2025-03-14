@@ -14,6 +14,7 @@ public class Menu {
     private final Scanner sc;
     private boolean loopExit = false;
     ExchangeRateCurrency exchangeRateCurrency;
+    private boolean printResult = false;
 
     public Menu() {
         sc = new Scanner(System.in);
@@ -33,6 +34,9 @@ public class Menu {
         while (!loopExit) {
             printExchangeRate();
             printChoiceMenu();
+            if (printResult) {
+                printResult(exchangeRateCurrency);
+            }
             exchangeCalculations();
         }
     }
@@ -53,8 +57,10 @@ public class Menu {
                 return sc.nextInt();
 
             } catch (Exception e) {
+
                 System.out.println("Enter a valid number for the menu");
                 sc.next();
+
             }
         }
     }
@@ -87,6 +93,7 @@ public class Menu {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM uuuu  HH:mm:ss ");
         String formatedDateTime = dateTime.format(formatter);
         System.out.println(MessageFormat.format("{0} {1} is {2} {3} at date of {4}", exchangeRateCurrency.getAmount(), exchangeRateCurrency.getFromCurrency(), exchangeRateCurrency.getConvertedAmount(), exchangeRateCurrency.getToCurrency(), formatedDateTime));
+        System.out.println(" ");
     }
 
     private void currencySetter(int numChoice) {
@@ -107,7 +114,7 @@ public class Menu {
     }
 
     private void exchangeCalculations() {
-        double userAmount = 0;
+        double userAmount;
 
         int menuChoice = userChoice();
 
@@ -147,7 +154,7 @@ public class Menu {
         if (menuChoice == 0) {
             System.out.println("Bye have a great time ");
         } else {
-            printResult(exchangeRateCurrency);
+            printResult = true;
         }
     }
 }
