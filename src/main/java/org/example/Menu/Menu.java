@@ -4,7 +4,6 @@ import org.example.Currency.ExchangeRateCurrency;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.text.MessageFormat;
 
@@ -75,20 +74,24 @@ public class Menu {
         while (true) {
             try {
                 System.out.print("Enter the amount you want to convert: ");
-                double userInput = sc.nextDouble();
+                String input = sc.nextLine().trim();
 
-                if (userInput <= 0) {
-
-                    System.out.println("Enter a valid positive Numbers ");
-
-                } else {
-                    return userInput;
+                if (!input.matches("\\d+(\\.\\d+)?")) {
+                    System.out.println("Enter a valid number if EX: 2.5 or whole numbers EX: 1 and use Dot not Comma ");
+                    continue;
                 }
 
-            } catch (InputMismatchException e) {
-                System.out.println("Enter a valid number if EX: 2.5 or whole numbers EX: 1 and use Dot not Comma ");
-                sc.next();
+                double userInput = Double.parseDouble(input);
 
+                if (userInput <= 0) {
+                    System.out.println("Enter a valid positive number");
+                    continue;
+                }
+
+                return userInput;
+
+            } catch (Exception e) {
+                System.out.println("Unexpected error. Try again.");
             }
         }
     }
